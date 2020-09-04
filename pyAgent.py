@@ -27,7 +27,7 @@ if (__name__ == "__main__"):
 
     curState = em.getInitialState()
 
-    print("Initial State: ", initialState)
+    print("Initial State: ", curState)
 
     while (not terminalState):
 
