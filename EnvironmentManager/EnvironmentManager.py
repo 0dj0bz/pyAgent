@@ -66,7 +66,7 @@ class ArtifactSnippet:
             self.version, self.channel, self.numRecs, self.artLabel, self.sampleStart, self.sampleEnd, \
             self.artStart, self.artEnd, self.chanLabel, self.transducerType, self.physDim,\
             self.physMin, self.physMax, self.digiMin, self.digiMax, self.prefilter, self.numSamples,\
-            self.reserved = struct.unpack('20sii255sffff17s81s9s9s9s9s9s81s9s33sxx', rawHeader)
+            self.reserved = struct.unpack('20sii255sffff16sx80sx8sx8sx8sx8sx8sx80sx8sx32sxxx', rawHeader)
 
             # now there are two more things to read: an array of shorts of len numRecs an::d
             # an array of bools of len numRecs.
@@ -86,7 +86,10 @@ class ArtifactSnippet:
 
         self.idx = self.idx + 1
 
-        retVal = (self.data[self.idx-1] + ((self.digiMax-self.digiMin)/2))/(self.digiMax-self.digiMin)
+        retVal = ((float(self.data[self.idx-1])) + \
+                  (float((self.digiMax.decode()))-(float(self.digiMin.decode())) )
+                   / 2) / (float(self.digiMax.decode())-float(self.digiMin.decode()))
+
         return (retVal, self.flags[self.idx-1])
 
 
