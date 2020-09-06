@@ -85,7 +85,9 @@ class ArtifactSnippet:
             raise StopIteration
 
         self.idx = self.idx + 1
-        return (self.data[self.idx-1], self.flags[self.idx-1])
+
+        retVal = (self.data[self.idx-1] + ((self.digiMax-self.digiMin)/2))/(self.digiMax-self.digiMin)
+        return (retVal, self.flags[self.idx-1])
 
 
 class EnvironmentManager:
