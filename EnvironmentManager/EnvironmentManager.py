@@ -41,6 +41,7 @@ class ArtifactSnippet:
         self.sampleEnd = None
         self.artStart = None
         self.artEnd = None
+        self.recDuration = None
         self.chanLabel = None
         self.transducerType = None
         self.physDim = None
@@ -64,9 +65,13 @@ class ArtifactSnippet:
 
             rawHeader = f.read(568)
             self.version, self.channel, self.numRecs, self.artLabel, self.sampleStart, self.sampleEnd, \
-            self.artStart, self.artEnd, self.chanLabel, self.transducerType, self.physDim,\
+            self.artStart, self.artEnd, self.recDuration, self.chanLabel, self.transducerType, self.physDim,\
             self.physMin, self.physMax, self.digiMin, self.digiMax, self.prefilter, self.numSamples,\
-            self.reserved = struct.unpack('20sii255sffff16sx80sx8sx8sx8sx8sx8sx80sx8sx32sxxx', rawHeader)
+            self.reserved = struct.unpack('20sii255sffffh16sx80sx8sx8sx8sx8sx8sx80sx8sx32sx', rawHeader)
+
+
+            print("numRecs    : ", self.numRecs)
+            print("recDuration: ", self.recDuration)
 
             # now there are two more things to read: an array of shorts of len numRecs an::d
             # an array of bools of len numRecs.

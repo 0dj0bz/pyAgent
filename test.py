@@ -21,6 +21,12 @@ if (__name__ == "__main__"):
     model.add(tf.keras.layers.LSTM(1, input_shape=[1,1]))
     model.compile()
 
+    em = envMgr.EnvironmentManager()
+
+    em.startEpisode()
+
+
+    print("recDuration: ", em.snip.recDuration)
 
     with open('snip_train-none.tsv', 'r') as f:
         for line in csv.reader(f, delimiter='\t'):
