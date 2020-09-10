@@ -19,8 +19,8 @@ class ArtifactSnippet:
 #     char numSamples[8 + 1];
 #     char reserved[32 + 1];
 # };
-# struct EEGArtifactV3 {
-#     char version[20] = "EEGArtifactV3";
+# struct EEGArtifactV4 {
+#     char version[20] = "EEGArtifactV4";
 #     int channel;
 #     int numSamples;
 #     char label[255];
@@ -28,8 +28,9 @@ class ArtifactSnippet:
 #     float sampleEnd;
 #     float artStart;
 #     float artEndartEnd;
+#     short recDuration;
 #     EDF_SIGNAL signalMetadata;
-# robabbott@robabbott-G7-7790}
+# }
 
     def __init__(self):
         self.header = None
@@ -69,10 +70,6 @@ class ArtifactSnippet:
             self.physMin, self.physMax, self.digiMin, self.digiMax, self.prefilter, self.numSamples,\
             self.reserved = struct.unpack('20sii255sffffh16sx80sx8sx8sx8sx8sx8sx80sx8sx32sx', rawHeader)
 
-
-            print("numRecs    : ", self.numRecs)
-            print("recDuration: ", self.recDuration)
-
             # now there are two more things to read: an array of shorts of len numRecs an::d
             # an array of bools of len numRecs.
 
@@ -107,9 +104,14 @@ class EnvironmentManager:
     def __init__(self):
         self.envId = uuid.uuid4()
 
-    def startEpisode(self):
+    def startEpisode(self, fileName=None):
         self.snip = ArtifactSnippet()
-        self.snip.loadfile("/home/robabbott/dev/edfviewer/002_art/00000254_s005_t000_ch009-8.art")
+
+        if fileName == None:
+            self.snip.loadfile("/home/robabbott/dev/edfviewer/002_art/00000254_s005_t000_ch009-8.art")
+        else:
+            self.snip.loadfile(filename)
+
         self.vals = iter(self.snip)
 
     def getInitialState(self):
